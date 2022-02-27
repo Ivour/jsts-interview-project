@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import NavBar from "../layout/NavBar";
 import styles from "./Repos.module.css";
-import { Button } from "@mui/material";
+import { Button, Avatar } from "@mui/material";
 import { useState, useEffect } from "react";
 
 import axios from "axios";
@@ -12,22 +12,23 @@ const Repos = () => {
   const params = useParams();
   const BASE_URL = "https://api.github.com";
 
-  function getUserData(username) {
+  const getUserData = useCallback((username) => {
     return axios
       .all([
-        axios.get(`${BASE_URL}/users/${input}`),
-        axios.get(`${BASE_URL}/users/${input}/orgs`),
+        axios.get(`${BASE_URL}/users/${username}`),
+        axios.get(`${BASE_URL}/users/${username}/orgs`),
       ])
-      .then(([user, orgs]) =>
+      .then(([user, orgs]) => {
         console.log({
           user: user.data,
           orgs: orgs.data,
-        })
-      );
-  }
+        });
+        setInput(user.data.avatar_url);
+      });
+  }, []);
   const gethandler = useCallback(async (username) => {
     const BASE_URL = "https://api.github.com";
-    const url = `${BASE_URL}/users/${params.username}/repos?per_page=250`;
+    const url = `${BASE_URL}/users/${username}/repos?per_page=250`;
     try {
       const res = await fetch(url);
       const data = await res.json();
@@ -41,7 +42,8 @@ const Repos = () => {
 
   useEffect(() => {
     gethandler(params.username);
-  }, [params.username, gethandler]);
+    getUserData(params.username);
+  }, [params.username, getUserData, gethandler]);
 
   return (
     <>
@@ -49,6 +51,7 @@ const Repos = () => {
       <input type="text" onChange={(e) => setInput(e.target.value)}></input>
       <Button onClick={gethandler}>get repos</Button>
       <Button onClick={getUserData}>get user data</Button>
+      <Avatar alt="Remy Sharp" src={input} />
     </>
   );
 };
