@@ -6,8 +6,10 @@ import MediationIcon from "@mui/icons-material/Mediation";
 
 let content;
 
-const NavBar = ({ isSearch }) => {
+const NavBar = ({ isSearch, isRepos }) => {
   if (isSearch) content = <ChipWithMenu />;
+
+  if (isRepos) content = <ChipWithMenu />;
 
   return (
     <nav className={styles["nav-bar"]}>
