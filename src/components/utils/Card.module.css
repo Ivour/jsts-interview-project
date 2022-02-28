@@ -8,3 +8,7 @@
   flex-direction: column;
   align-items: center;
 }
+
+.card--profile {
+  margin-top: 3em;
+}

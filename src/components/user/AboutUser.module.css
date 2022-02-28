@@ -1,0 +1,30 @@
+.about-user {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  grid-template-rows: auto auto auto;
+  width: 100%;
+  justify-items: end;
+  align-items: center;
+  row-gap: 1em;
+  column-gap: 0.3em;
+}
+
+.about-user__title {
+  grid-column: 1/-1;
+  grid-row: 1/2;
+  justify-self: center;
+}
+
+.about-user__avatar {
+  grid-column: 2/-1;
+  grid-row: 1/2;
+  justify-self: end;
+  margin-right: 2em;
+  margin-top: -2em;
+}
+
+.about-user__buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
