@@ -4,7 +4,7 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#cffc03",
+      main: "#3feb9a",
     },
     secondary: {
       main: "#f30661", //????TODO??????
@@ -20,7 +20,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           // Some CSSv
-          borderColor: "#cefc03b6",
+          borderColor: "#3feb9a",
           borderRadius: "0.6rem",
         },
         // Name of the slot

@@ -20,12 +20,12 @@ const Repos = () => {
   const [repos, setRepos] = useState([]);
   const params = useParams();
   const fetchtry = async () => {
-    const res = await fetch(`${GIT_BASE_URL}/users/${params.username}/orgs`);
+    const res = await fetch(
+      `${GIT_BASE_URL}/users/${params.username}/repos?per_page=250`
+    );
     const data = await res.json();
     setRepos(data);
     console.log(data);
-
-    //repos?per_page=250
   };
   return (
     <>

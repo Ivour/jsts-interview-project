@@ -26,6 +26,8 @@
 
 .orgs-item__description {
   color: rgb(155, 155, 155);
+  color: #3feb9a;
+
   grid-area: description;
   padding: 0.5em 0;
 
