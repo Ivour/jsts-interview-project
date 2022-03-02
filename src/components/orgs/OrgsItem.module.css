@@ -1,0 +1,40 @@
+.orgs-item {
+  width: 80vw;
+  padding: 1em;
+  margin: 1em auto;
+  border: 1px solid rgb(167, 167, 167);
+  border-radius: 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  align-items: center;
+  grid-template-areas:
+    "name avatar"
+    "description description"
+    "members repos";
+}
+
+.orgs-item__name {
+  grid-area: name;
+}
+
+.orgs-item__avatar {
+  grid-area: avatar;
+  align-self: start;
+  justify-self: center;
+}
+
+.orgs-item__description {
+  color: rgb(155, 155, 155);
+  grid-area: description;
+  width: 90%;
+  justify-self: start;
+}
+
+.orgs-item__members {
+  grid-area: members;
+}
+
+.orgs-item__repos {
+  grid-area: repos;
+}

@@ -20,7 +20,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           // Some CSSv
-
+          borderColor: "#cefc03b6",
           borderRadius: "0.6rem",
         },
         // Name of the slot

@@ -2,6 +2,7 @@
   width: 100vw;
   display: flex;
   justify-content: space-between;
+  background-color: #cefc03b6;
   background-color: rgba(66, 66, 66, 0.521);
   position: sticky;
   z-index: 300;

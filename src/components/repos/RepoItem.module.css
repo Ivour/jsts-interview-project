@@ -1,0 +1,35 @@
+.repo-item {
+  width: 80vw;
+  padding: 1em;
+  margin: 1em auto;
+  border: 1px solid rgb(167, 167, 167);
+  border-radius: 1rem;
+  display: grid;
+  grid-template-columns: 50% auto;
+  grid-template-rows: auto auto auto;
+  align-items: center;
+}
+
+.repo-item__name {
+}
+
+.repo-item__visibility {
+  width: fit-content;
+  justify-self: end;
+}
+
+.repo-item__accordion {
+  grid-column: 1/-1;
+  justify-self: center;
+  width: 90%;
+  margin: 0.3em 0;
+}
+
+.repo-item__language {
+}
+
+.repo-item__stars-container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}

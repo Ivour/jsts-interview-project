@@ -18,8 +18,6 @@ import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
-const data = [{}];
-
 const AboutUser = () => {
   const { username } = useParams();
 
