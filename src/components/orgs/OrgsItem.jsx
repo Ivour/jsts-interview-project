@@ -14,7 +14,7 @@ import {
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 
-const OrgsItem = ({ name, url, description }) => {
+const OrgsItem = ({ name, members, description, avatar, repos }) => {
   return (
     <>
       <div className={styles["orgs-item"]}>
@@ -54,14 +54,17 @@ const OrgsItem = ({ name, url, description }) => {
           alt="Remy Sharp"
           className={styles["orgs-item__avatar"]}
           variant="rounded"
-          /* src={input}  TODO sizes*/ sx={{ border: "1px solid #cffc03" }}
+          src={avatar}
+          /*  TODO sizes */ sx={{ border: "1px solid #cffc03" }}
         />
 
         <Typography className={styles["orgs-item__members"]}>
-          400 members
+          {members} members
         </Typography>
 
-        <Typography className={styles["orgs-item__repos"]}>30 repos</Typography>
+        <Typography className={styles["orgs-item__repos"]}>
+          {repos} repos
+        </Typography>
       </div>
     </>
   );

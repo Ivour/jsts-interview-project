@@ -7,13 +7,28 @@ import { GIT_BASE_URL } from "../../config/constants";
 import ChipWithMenu from "../utils/ChipWithMenu";
 
 const Orgs = () => {
-  const [repos, setRepos] = useState([]);
+  const [orgs, setOrgs] = useState([]);
   const params = useParams();
   const fetchtry = async () => {
     const res = await fetch(`${GIT_BASE_URL}/users/${params.username}/orgs`);
     const data = await res.json();
-    setRepos(data);
-    console.log(data);
+
+    const updatedData = await Promise.all(
+      data.map(async (obj) => {
+        const membersRes = await fetch(
+          `https://api.github.com/orgs/${obj.login}/public_members`
+        );
+        const membersData = await membersRes.json();
+
+        const reposRes = await fetch(
+          `https://api.github.com/orgs/${obj.login}/repos`
+        );
+        const reposData = await reposRes.json();
+        return { ...obj, members: membersData.length, repos: reposData.length };
+      })
+    );
+
+    setOrgs(updatedData);
 
     //repos?per_page=250
   };
@@ -33,15 +48,16 @@ const Orgs = () => {
       <Typography variant="h5">
         {`${params.username}'s`} Organisations
       </Typography>
-      {repos.map((obj, i) => (
+      {orgs.map((obj, i) => (
         <OrgsItem
           key={i}
           name={obj.login}
-          url={obj.html_url}
+          avatar={obj.avatar_url}
           description={obj.description}
+          members={obj.members}
+          repos={obj.repos}
         />
       ))}
-      <Pagination count={10} variant="outlined" color="primary" />
     </>
   );
 };
