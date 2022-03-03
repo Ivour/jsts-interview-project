@@ -65,17 +65,14 @@ const AboutUser = () => {
   }, []);
 
   useEffect(() => {
-    console.log("effect running");
-    const obj = JSON.parse(localStorage.getItem("userData"));
-    const loginToLower = [...obj.login]
+    const login = JSON.parse(localStorage.getItem("userData"))?.login || "";
+    const loginToLower = [...login]
       .map((v) => {
         if (typeof v === "string") return v.toLowerCase();
         return v;
       })
       .join("");
-    console.log(loginToLower);
     if (loginToLower !== username) {
-      console.log("getData running");
       getData(username);
     }
   }, [getData, username]);
