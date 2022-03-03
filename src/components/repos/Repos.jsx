@@ -7,53 +7,97 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom"; */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../layout/NavBar";
 import styles from "./Repos.module.css";
 import RepoItem from "./RepoItem";
-import { Typography, Button, Pagination } from "@mui/material";
+import {
+  Typography,
+  Button,
+  Pagination,
+  LinearProgress,
+  Alert,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 import { GIT_BASE_URL } from "../../config/constants";
 import ChipWithMenu from "../utils/ChipWithMenu";
+import { Link } from "react-router-dom";
 
 const Repos = () => {
-  const [repos, setRepos] = useState([]);
-  const params = useParams();
-  const fetchtry = async () => {
-    const res = await fetch(
-      `${GIT_BASE_URL}/users/${params.username}/repos?per_page=250`
-    );
-    const data = await res.json();
-    setRepos(data);
-    console.log(data);
+  const [repos, setRepos] = useState(null);
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { username } = useParams();
+
+  const fetchRepos = async (username) => {
+    try {
+      setIsLoading(true);
+      setHasError(false);
+      const res = await fetch(
+        `${GIT_BASE_URL}/users/${username}/repos?per_page=250`
+      );
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || "fetch failed");
+
+      setRepos(data);
+      setIsLoading(false);
+    } catch (err) {
+      setHasError(err.message);
+      setIsLoading(false);
+    }
   };
+  useEffect(() => {
+    fetchRepos(username);
+  }, [username]);
   return (
     <>
       <NavBar
-        contenttest={
+        content={
           <>
-            <Button size="small" color="primary" variant="outlined">
-              try
+            <Button
+              size="small"
+              color="primary"
+              variant="outlined"
+              component={Link}
+              to={`/${username}`}
+            >
+              back
             </Button>
             <ChipWithMenu />
           </>
         }
       />
-      <button onClick={fetchtry}>click me</button>
-      <Typography variant="h5" className={styles["repos__title"]}>
-        {`${params.username}'s`} Repositories
-      </Typography>
-      {repos.map((obj, i) => (
-        <RepoItem
-          key={i}
-          name={obj.name}
-          url={obj.html_url}
-          description={obj.description}
-          stars={obj.stargazers_count}
-          language={obj.language}
-        />
-      ))}
-      <Pagination count={10} variant="outlined" color="primary" />
+      {isLoading && <LinearProgress color="primary" />}
+
+      {hasError && (
+        <Alert
+          severity="error"
+          variant="outlined"
+          sx={{ width: "80%", margin: "2em auto" }}
+        >
+          {hasError}
+        </Alert>
+      )}
+
+      {repos && (
+        <>
+          <Typography variant="h5" className={styles["repos__title"]}>
+            {`${username}'s`} Repositories
+          </Typography>
+          {repos.map((obj, i) => (
+            <RepoItem
+              key={i}
+              name={obj.name}
+              url={obj.html_url}
+              description={obj.description}
+              stars={obj.stargazers_count}
+              language={obj.language}
+            />
+          ))}
+          <Pagination count={10} variant="outlined" color="primary" />
+        </>
+      )}
     </>
   );
 };

@@ -2,10 +2,16 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { GIT_BASE_URL } from "../../config/constants";
 import Card from "../utils/Card";
-import { Typography, Button, Avatar, Alert } from "@mui/material";
+import {
+  Typography,
+  Button,
+  Avatar,
+  Alert,
+  Link as MuiLink,
+} from "@mui/material";
 import styles from "./AboutUser.module.css";
 import UserGridRow from "./UserGridRow";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import NavBar from "../layout/NavBar";
 import LinearProgress from "@mui/material/LinearProgress";
 
@@ -32,7 +38,9 @@ const updatedTitles = {
 
 const AboutUser = () => {
   const { username } = useParams();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("userData"))
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -40,9 +48,14 @@ const AboutUser = () => {
     setIsLoading(true);
     setHasError(false);
     try {
+      localStorage.removeItem("userData");
       const res = await fetch(`${GIT_BASE_URL}/users/${username}`);
-      if (!res.ok) throw new Error("fetching failed, try again");
       const data = await res.json();
+
+      //if (!res.ok) throw new Error("fetch failed");
+      if (data.message === "Not Found") throw new Error(`User ${data.message}`);
+
+      localStorage.setItem("userData", JSON.stringify(data));
       setIsLoading(false);
       setUserData(data);
     } catch (err) {
@@ -52,7 +65,19 @@ const AboutUser = () => {
   }, []);
 
   useEffect(() => {
-    getData(username);
+    console.log("effect running");
+    const obj = JSON.parse(localStorage.getItem("userData"));
+    const loginToLower = [...obj.login]
+      .map((v) => {
+        if (typeof v === "string") return v.toLowerCase();
+        return v;
+      })
+      .join("");
+    console.log(loginToLower);
+    if (loginToLower !== username) {
+      console.log("getData running");
+      getData(username);
+    }
   }, [getData, username]);
 
   return (
@@ -62,7 +87,7 @@ const AboutUser = () => {
           <Button
             variant="outlined"
             size="small"
-            component={Link}
+            component={RouterLink}
             to={"/search"}
           >
             search
@@ -100,12 +125,18 @@ const AboutUser = () => {
               {Object.keys(updatedTitles).map((key, i) => {
                 if (!userData[key]) return null;
 
+                let updatedContent = null;
+                if (key === "created_at") {
+                  updatedContent = userData[key].slice(0, 4);
+                }
+
                 return (
                   <UserGridRow
                     key={i}
                     title={updatedTitles[key][0]}
-                    value={userData[key]}
+                    value={updatedContent ?? userData[key]}
                     icon={updatedTitles[key][1]}
+                    link={key === "blog" ? userData[key] : false}
                   />
                 );
               })}
@@ -113,16 +144,23 @@ const AboutUser = () => {
           </Card>
           <Card>
             <Button variant="outlined">
-              Link to gitHub{" "}
+              <MuiLink
+                href={`https://github.com/${username}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ width: "fit-content", fontWeight: "bold" }}
+              >
+                Link to github
+              </MuiLink>
               <GitHubIcon sx={{ color: "white", marginLeft: "0.5em" }} />
             </Button>
           </Card>
           <Card>
             <div className={styles["about-user__buttons"]}>
-              <Button variant="outlined" component={Link} to="repos">
+              <Button variant="outlined" component={RouterLink} to="repos">
                 Repos
               </Button>
-              <Button variant="outlined" component={Link} to="orgs">
+              <Button variant="outlined" component={RouterLink} to="orgs">
                 Orgs
               </Button>
             </div>

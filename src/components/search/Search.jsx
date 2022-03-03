@@ -47,15 +47,6 @@ const Search = () => {
           </Button>
         </form>
       </Card>
-      <Card>
-        <Alert
-          variant="outlined"
-          severity="error"
-          sx={{ borderRadius: "1rem" }}
-        >
-          alert message - programaticaly
-        </Alert>
-      </Card>
     </>
   );
 };
