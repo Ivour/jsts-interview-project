@@ -16,6 +16,7 @@ const Search = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    navigate(`/${usernameInput}`);
   };
 
   return (

@@ -1,6 +1,6 @@
 .about-user {
   display: grid;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 7rem 1fr;
   grid-template-rows: auto auto auto;
   width: 100%;
   justify-items: end;
@@ -19,11 +19,12 @@
   grid-column: 2/-1;
   grid-row: 1/2;
   justify-self: end;
-  margin-right: 2em;
+  margin-right: 1em;
   margin-top: -2em;
 }
 
 .about-user__buttons {
+  width: 15rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
