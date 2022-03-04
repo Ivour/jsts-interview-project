@@ -14,9 +14,9 @@ import UserGridRow from "./UserGridRow";
 import { Link as RouterLink } from "react-router-dom";
 import NavBar from "../layout/NavBar";
 import LinearProgress from "@mui/material/LinearProgress";
+import ChipWithMenu from "../utils/ChipWithMenu";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import BadgeIcon from "@mui/icons-material/Badge";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import ViewAgendaIcon from "@mui/icons-material/ViewAgenda";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -24,10 +24,11 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { useAuthContext } from "../../store/auth-context";
 
 const updatedTitles = {
   login: ["Login", <AccountCircleIcon />],
-  
+
   blog: ["Blog", <ViewAgendaIcon />],
   bio: ["Bio", <FingerprintIcon />],
   location: ["Location", <LocationOnIcon />],
@@ -43,7 +44,7 @@ const AboutUser = () => {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-
+  const { user } = useAuthContext();
   const getData = useCallback(async (username) => {
     setIsLoading(true);
     setHasError(false);
@@ -81,14 +82,18 @@ const AboutUser = () => {
     <>
       <NavBar
         content={
-          <Button
-            variant="outlined"
-            size="small"
-            component={RouterLink}
-            to={"/search"}
-          >
-            search
-          </Button>
+          <>
+            <Button
+              variant="outlined"
+              size="small"
+              component={RouterLink}
+              to={"/search"}
+              sx={{ marginRight: "1em" }}
+            >
+              search
+            </Button>
+            {user && <ChipWithMenu />}
+          </>
         }
       />
       {isLoading && <LinearProgress color="primary" />}

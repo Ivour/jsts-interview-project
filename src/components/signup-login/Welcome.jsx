@@ -1,15 +1,21 @@
 import { Typography, Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../utils/Card";
 import Signup from "./Signup";
 import Login from "./Login";
 import styles from "./Welcome.module.css";
 import NavBar from "../layout/NavBar";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../store/auth-context";
 
 const Welcome = () => {
   const [loginIsVisible, setLoginIsVisible] = useState(true);
   const navigate = useNavigate();
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    user && navigate("search");
+  }, [user, navigate]);
 
   const showLoginHandler = () => {
     setLoginIsVisible((prevState) => !prevState);

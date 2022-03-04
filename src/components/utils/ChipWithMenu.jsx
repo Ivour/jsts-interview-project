@@ -4,12 +4,12 @@ import Menu from "@mui/material/Menu";
 import Chip from "@mui/material/Chip";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-/* import { useAuthContext } from "../../store/AuthContext";
-import { useNavigate } from "react-router-dom"; */
+import { useAuthContext } from "../../store/auth-context";
+import { useNavigate } from "react-router-dom";
 
-export default function ChipWithMenu(/* { isGame } */) {
-  /*   const { signout, user } = useAuthContext();
-  const navigate = useNavigate(); */
+export default function ChipWithMenu() {
+  const { signout, user } = useAuthContext();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -19,15 +19,18 @@ export default function ChipWithMenu(/* { isGame } */) {
     try {
       setAnchorEl(null);
 
-      /*  if (e.currentTarget.id === "logout") {
+      if (e.currentTarget.id === "logout") {
         await signout();
         navigate("/");
       }
+      /*
       if (e.currentTarget.id === "profile") navigate("/profile");
 
       if (e.currentTarget.id === "profile-settings")
         navigate("/profile-settings"); */
-    } catch (e) {}
+    } catch (e) {
+      alert(e.messge);
+    }
   };
 
   return (
@@ -63,19 +66,11 @@ export default function ChipWithMenu(/* { isGame } */) {
           "aria-labelledby": "basic-button",
         }}
       >
-        {/*  {!isGame && (
-          <MenuItem onClick={handleClose} id="profile">
-            Profile
-          </MenuItem>
-        )}
-        {!isGame && (
-          <MenuItem onClick={handleClose} id="profile-settings">
-            Account Settings
-          </MenuItem>
-        )}
- */}
+        <MenuItem onClick={handleClose} id="repos">
+          Fav Repos
+        </MenuItem>
         <MenuItem onClick={handleClose} id="logout">
-          {/* isGame ? "End game and logout" : */ "Logout"}
+          Logout
         </MenuItem>
       </Menu>
     </div>
