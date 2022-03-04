@@ -1,39 +1,76 @@
-import React from "react";
-import { Typography, TextField, Button } from "@mui/material";
+import React, { useState } from "react";
+import { Typography, TextField, Button, Alert } from "@mui/material";
 import styles from "./Login.module.css";
+import { useAuthContext } from "../../store/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [hasError, setHasError] = useState(false);
+  const { login } = useAuthContext();
+  const navigate = useNavigate();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      setHasError(false);
+      if (!email) throw new Error("fill the email");
+      if (!pass) throw new Error("fill the password");
+
+      await login(email, pass);
+      navigate("search");
+    } catch (err) {
+      setHasError(err.message);
+    }
+  };
+
   return (
-    <form className={styles.form}>
-      <Typography variant="h5" color="primary">
-        Log in
-      </Typography>
-      <TextField
-        label="Email"
-        autoComplete="off"
-        variant="outlined"
-        size="small"
-        sx={{ margin: "1em" }}
-        /*  value={email} */
-      />
-      <TextField
-        label="Password"
-        autoComplete="off"
-        variant="outlined"
-        size="small"
+    <>
+      {hasError && (
+        <Alert
+          variant="outlined"
+          severity="warning"
+          sx={{ marginBottom: "1em" }}
+        >
+          {hasError}
+        </Alert>
+      )}
+      <form className={styles.form} onSubmit={submitHandler}>
+        <Typography variant="h5" color="primary">
+          Log in
+        </Typography>
+        <TextField
+          label="Email"
+          autoComplete="off"
+          variant="outlined"
+          size="small"
+          type="email"
+          sx={{ margin: "1em" }}
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
+        <TextField
+          label="Password"
+          autoComplete="off"
+          variant="outlined"
+          size="small"
+          type="password"
+          onChange={(e) => setPass(e.target.value)}
+          value={pass}
+        />
 
-        /*  value={email} */
-      />
-
-      <Button
-        type="submit"
-        size="small"
-        sx={{ marginTop: "1em" }}
-        variant="outlined"
-      >
-        Sign Up
-      </Button>
-    </form>
+        <Button
+          type="submit"
+          size="small"
+          sx={{ marginTop: "1em" }}
+          variant="outlined"
+        >
+          Log in
+        </Button>
+      </form>
+    </>
   );
 };
 

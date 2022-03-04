@@ -5,46 +5,43 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updatePassword,
-  updateProfile,
 } from "firebase/auth";
-//import { auth } from "../config/firebase";
+import { auth } from "../config/firebase";
 
 const AuthContext = createContext({
-  signUp: () => {},
-  logIn: () => {},
+  signup: () => {},
+  login: () => {},
   signout: () => {},
-  updateProfile: () => {},
+  changePassword: () => {},
 });
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
 
-  function signUp(email, password) {
-    // return createUserWithEmailAndPassword(auth, email, password);
+  function signup(email, password) {
+    return createUserWithEmailAndPassword(auth, email, password);
   }
-  const logIn = (email, password) => {
-    // return signInWithEmailAndPassword(auth, email, password);
+  const login = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
   };
   const signout = () => {
-    //  return signOut(auth);
+    return signOut(auth);
   };
-  const addUsername = (username) => {
-    //  return updateProfile(auth.currentUser, { displayName: username });
-  };
+
   const changePassword = (newPassword) => {
     return updatePassword(user, newPassword);
   };
 
-  /*  useEffect(() => {
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
     return unsubscribe;
   }, []);
- */
+
   return (
     <AuthContext.Provider
-      value={{ signUp, logIn, user, signout, addUsername, changePassword }}
+      value={{ signup, login, user, signout, changePassword }}
     >
       {children}
     </AuthContext.Provider>
