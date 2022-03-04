@@ -3,7 +3,6 @@ import { Typography, Link } from "@mui/material";
 import styles from "./UserGridRow.module.css";
 
 const UserGridRow = ({ title, value, icon, link }) => {
-  console.log(link);
   return (
     <>
       <div className={styles["icon-title"]}>

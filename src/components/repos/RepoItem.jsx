@@ -17,7 +17,11 @@ import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 const RepoItem = ({ name, url, description, language, stars }) => {
   return (
     <>
-      <div className={styles["repo-item"]}>
+      <div
+        className={`${styles["repo-item"]} ${
+          !description && styles["repo-item--with-description"]
+        }`}
+      >
         <Link
           href={url}
           target="_blank"
@@ -53,23 +57,25 @@ const RepoItem = ({ name, url, description, language, stars }) => {
           {description}
         </Typography> */}
 
-        <Accordion
-          variant="outlined"
-          className={styles["repo-item__accordion"]}
-          sx={{ backgroundColor: "#242424", borderRadius: "1rem" }}
-          disableGutters={true}
-        >
-          <AccordionSummary
-            expandIcon={<ArrowCircleDownIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+        {description && (
+          <Accordion
+            variant="outlined"
+            className={styles["repo-item__accordion"]}
+            sx={{ backgroundColor: "#242424", borderRadius: "1rem" }}
+            disableGutters={true}
           >
-            <Typography>Description</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{description}</Typography>
-          </AccordionDetails>
-        </Accordion>
+            <AccordionSummary
+              expandIcon={<ArrowCircleDownIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>Description</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{description}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        )}
 
         <Typography className={styles["repo-item__language"]}>
           {language}
