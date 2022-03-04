@@ -11,19 +11,32 @@ const Search = () => {
   const navigate = useNavigate();
 
   const inputHandler = (e) => {
+    setHasError(false);
     setUsernameInput(e.target.value); // TODO add debouncing
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!usernameInput) {
+      setHasError(true);
+      return;
+    }
+    localStorage.removeItem("userData");
+    localStorage.removeItem("repos");
     navigate(`/${usernameInput}`);
   };
 
   return (
     <>
       <NavBar
+        showText={true}
         content={
-          <Button variant="outlined" size="small" onClick={() => navigate("/")}>
+          <Button
+            variant="outlined"
+            sx={{ marginRight: "0.5em" }}
+            size="small"
+            onClick={() => navigate("/")}
+          >
             Create account
           </Button>
         }
@@ -47,6 +60,11 @@ const Search = () => {
           </Button>
         </form>
       </Card>
+      {hasError && (
+        <Alert severity="warning" variant="outlined">
+          Fill in the username
+        </Alert>
+      )}
     </>
   );
 };

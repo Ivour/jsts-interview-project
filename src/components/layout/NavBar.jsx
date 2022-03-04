@@ -4,16 +4,12 @@ import { Button, Typography } from "@mui/material";
 import ChipWithMenu from "../utils/ChipWithMenu";
 import MediationIcon from "@mui/icons-material/Mediation";
 
-const NavBar = ({ content }) => {
-  /*   if (isSearch) content = <ChipWithMenu />;
-
-  if (isRepos) content = <ChipWithMenu />;
- */
+const NavBar = ({ showText, content }) => {
   return (
     <nav className={styles["nav-bar"]}>
       <div className={styles["nav-bar__logo-container"]}>
         <MediationIcon sx={{ margin: "0.4em" }} color="primary" />
-        <Typography>Get Repos App</Typography>
+        {showText && <Typography>Get Repos App</Typography>}
       </div>
       <div className={styles["nav-bar__buttons"]}>{content}</div>
     </nav>

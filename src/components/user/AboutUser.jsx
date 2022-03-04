@@ -27,7 +27,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 
 const updatedTitles = {
   login: ["Login", <AccountCircleIcon />],
-  name: ["Full name", <BadgeIcon />],
+  
   blog: ["Blog", <ViewAgendaIcon />],
   bio: ["Bio", <FingerprintIcon />],
   location: ["Location", <LocationOnIcon />],

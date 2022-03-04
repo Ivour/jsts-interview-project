@@ -47,6 +47,18 @@ const theme = createTheme({
         // Name of the slot
       },
     },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          // Some CSS
+
+          borderRadius: "0.6rem",
+          width: "80%",
+          margin: "auto",
+        },
+        // Name of the slot
+      },
+    },
   },
 });
 

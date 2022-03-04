@@ -79,6 +79,7 @@ const Repos = () => {
               size="small"
               color="primary"
               variant="outlined"
+              sx={{ marginRight: "1em" }}
               component={Link}
               to={`/${username}`}
             >

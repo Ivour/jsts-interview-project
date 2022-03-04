@@ -20,7 +20,7 @@ const Welcome = () => {
   };
   return (
     <>
-      <NavBar />
+      <NavBar showText={true} />
 
       <Card>{loginIsVisible ? <Login /> : <Signup />}</Card>
 

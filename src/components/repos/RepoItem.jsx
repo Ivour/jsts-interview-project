@@ -1,12 +1,9 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import { GIT_BASE_URL } from "../../config/constants";
 import styles from "./RepoItem.module.css";
 import {
   Typography,
   Chip,
   Link,
-  Tooltip,
   Accordion,
   AccordionSummary,
   AccordionDetails,

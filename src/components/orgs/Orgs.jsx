@@ -1,53 +1,102 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import NavBar from "../layout/NavBar";
 import OrgsItem from "./OrgsItem";
-import { Typography, Button, Pagination } from "@mui/material";
+import { Typography, Button, LinearProgress, Alert } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { GIT_BASE_URL } from "../../config/constants";
 import ChipWithMenu from "../utils/ChipWithMenu";
+import { Link } from "react-router-dom";
 
 const Orgs = () => {
   const [orgs, setOrgs] = useState([]);
-  const params = useParams();
-  const fetchtry = async () => {
-    const res = await fetch(`${GIT_BASE_URL}/users/${params.username}/orgs`);
-    const data = await res.json();
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-    const updatedData = await Promise.all(
-      data.map(async (obj) => {
-        const membersRes = await fetch(
-          `https://api.github.com/orgs/${obj.login}/public_members`
-        );
-        const membersData = await membersRes.json();
+  const { username } = useParams();
+  const fetchtry = useCallback(async (username) => {
+    try {
+      setHasError(false);
+      setIsLoading(true);
+      const res = await fetch(`${GIT_BASE_URL}/users/${username}/orgs`);
+      const data = await res.json();
 
-        const reposRes = await fetch(
-          `https://api.github.com/orgs/${obj.login}/repos`
-        );
-        const reposData = await reposRes.json();
-        return { ...obj, members: membersData.length, repos: reposData.length };
-      })
-    );
+      if (!res.ok) throw new Error(`User ${data.message}` || "fetch failed");
 
-    setOrgs(updatedData);
+      const updatedData = await Promise.all(
+        data.map(async (obj) => {
+          const membersRes = await fetch(
+            `https://api.github.com/orgs/${obj.login}/public_members`
+          );
+          if (!membersRes.ok) throw new Error("fetch failed");
 
-    //repos?per_page=250
-  };
+          const membersData = await membersRes.json();
+
+          const reposRes = await fetch(
+            `https://api.github.com/orgs/${obj.login}/repos`
+          );
+          if (!reposRes.ok) throw new Error("fetch failed");
+          const reposData = await reposRes.json();
+
+          return {
+            ...obj,
+            members: membersData.length,
+            repos: reposData.length,
+          };
+        })
+      );
+      setIsLoaded(true);
+      setIsLoading(false);
+      setOrgs(updatedData);
+    } catch (err) {
+      setIsLoading(false);
+      setHasError(err.message);
+      console.log(err.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchtry(username);
+  }, [fetchtry, username]);
+
   return (
     <>
       <NavBar
-        contenttest={
+        content={
           <>
-            <Button size="small" color="primary" variant="outlined">
-              try
+            <Button
+              size="small"
+              color="primary"
+              variant="outlined"
+              component={Link}
+              sx={{ marginRight: "1em" }}
+              to={`/${username}`}
+            >
+              back
             </Button>
             <ChipWithMenu />
           </>
         }
       />
-      <button onClick={fetchtry}>click me</button>
-      <Typography variant="h5">
-        {`${params.username}'s`} Organisations
-      </Typography>
+      {isLoading && <LinearProgress color="primary" />}
+
+      {hasError && (
+        <Alert
+          severity="error"
+          variant="outlined"
+          sx={{ width: "80%", margin: "2em auto" }}
+        >
+          {hasError}
+        </Alert>
+      )}
+      {!hasError && !isLoading && isLoaded && (
+        <Typography
+          variant="h5"
+          sx={{ paddingTop: "1em", textAlign: "center" }}
+        >
+          {`${username}'s`} Organisations
+        </Typography>
+      )}
       {orgs.map((obj, i) => (
         <OrgsItem
           key={i}
@@ -58,6 +107,11 @@ const Orgs = () => {
           repos={obj.repos}
         />
       ))}
+      {orgs.length === 0 && !hasError && isLoaded && (
+        <Alert severity="warning" variant="outlined" sx={{ marginTop: "1em" }}>
+          no organisations
+        </Alert>
+      )}
     </>
   );
 };
