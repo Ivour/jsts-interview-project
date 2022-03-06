@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./NavBar.module.css";
-import { Button, Typography } from "@mui/material";
-import ChipWithMenu from "../utils/ChipWithMenu";
+import { Typography } from "@mui/material";
 import MediationIcon from "@mui/icons-material/Mediation";
 
 const NavBar = ({ showText, content }) => {
