@@ -5,7 +5,7 @@ Simple mobile-first application for searching users, repositories and organisati
 ---
 
 You can visit the app by clicking this link:
-https://get-repos-app.netlify.com
+https://get-repos.netlify.com
 
 To run the app the locally:
 
