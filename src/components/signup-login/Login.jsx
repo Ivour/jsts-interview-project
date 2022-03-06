@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Typography, TextField, Button, Alert } from "@mui/material";
 import styles from "./Login.module.css";
 import { useAuthContext } from "../../store/auth-context";
 import { useNavigate } from "react-router-dom";
+import debounce from "lodash.debounce";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,23 @@ const Login = () => {
   const [hasError, setHasError] = useState(false);
   const { login } = useAuthContext();
   const navigate = useNavigate();
+
+  const emailInputHandler = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const debounceEmailInputHandler = useMemo(
+    () => debounce(emailInputHandler, 300),
+    []
+  );
+
+  const passInputHandler = (e) => {
+    setPass(e.target.value);
+  };
+  const debouncePassHandler = useMemo(
+    () => debounce(passInputHandler, 300),
+    []
+  );
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -48,8 +66,7 @@ const Login = () => {
           size="small"
           type="email"
           sx={{ margin: "1em" }}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
+          onChange={debounceEmailInputHandler}
         />
         <TextField
           label="Password"
@@ -57,8 +74,7 @@ const Login = () => {
           variant="outlined"
           size="small"
           type="password"
-          onChange={(e) => setPass(e.target.value)}
-          value={pass}
+          onChange={debouncePassHandler}
         />
 
         <Button

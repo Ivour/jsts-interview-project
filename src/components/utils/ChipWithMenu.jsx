@@ -37,7 +37,7 @@ export default function ChipWithMenu() {
     <div>
       <Chip
         icon={<AccountCircleIcon />}
-        label={"test@test.cz"}
+        label={user.email}
         variant="outlined"
         color="primary"
         onClick={handleClick}
@@ -66,9 +66,9 @@ export default function ChipWithMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose} id="repos">
+        {/* <MenuItem onClick={handleClose} id="repos">
           Fav Repos
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleClose} id="logout">
           Logout
         </MenuItem>

@@ -23,6 +23,7 @@ import { GIT_BASE_URL, REPOS_PER_PAGE } from "../../config/constants";
 import ChipWithMenu from "../utils/ChipWithMenu";
 import { Link } from "react-router-dom";
 import { stringToLowerCase } from "../../helpers/functions";
+import { useAuthContext } from "../../store/auth-context";
 
 const Repos = () => {
   const [repos, setRepos] = useState(
@@ -33,6 +34,7 @@ const Repos = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const { username } = useParams();
+  const { user } = useAuthContext();
 
   const pagiChangeHandler = (e, value) => {
     setPage(value);
@@ -85,7 +87,7 @@ const Repos = () => {
             >
               back
             </Button>
-            <ChipWithMenu />
+            {user && <ChipWithMenu />}
           </>
         }
       />

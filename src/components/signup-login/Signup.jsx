@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Typography, TextField, Button, Alert } from "@mui/material";
 import styles from "./Signup.module.css";
 import { useAuthContext } from "../../store/auth-context";
 import { useNavigate } from "react-router-dom";
+import debounce from "lodash.debounce";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,12 +16,26 @@ const Signup = () => {
   const emailInputHandler = (e) => {
     setEmail(e.target.value);
   };
+  const debounceEmailInputHandler = useMemo(
+    () => debounce(emailInputHandler, 300),
+    []
+  );
+
   const passInputHandler = (e) => {
     setPass(e.target.value);
   };
+  const debouncePassInputHandler = useMemo(
+    () => debounce(passInputHandler, 300),
+    []
+  );
   const passAgainInputHandler = (e) => {
     setPassAgain(e.target.value);
   };
+  const debouncePassAgainInputHandler = useMemo(
+    () => debounce(passAgainInputHandler, 300),
+    []
+  );
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (pass !== passAgain) {
@@ -55,9 +70,8 @@ const Signup = () => {
           autoComplete="off"
           variant="outlined"
           size="small"
-          onChange={emailInputHandler}
+          onChange={debounceEmailInputHandler}
           sx={{ margin: "1em" }}
-          value={email}
         />
         <TextField
           label="Password"
@@ -66,8 +80,7 @@ const Signup = () => {
           size="small"
           type="password"
           sx={{ marginBottom: "1em" }}
-          onChange={passInputHandler}
-          value={pass}
+          onChange={debouncePassInputHandler}
         />
         <TextField
           label="Repeat password"
@@ -75,8 +88,7 @@ const Signup = () => {
           variant="outlined"
           size="small"
           type="password"
-          onChange={passAgainInputHandler}
-          value={passAgain}
+          onChange={debouncePassAgainInputHandler}
         />
         <Button
           type="submit"

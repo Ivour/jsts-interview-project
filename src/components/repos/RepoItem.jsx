@@ -31,8 +31,8 @@ const RepoItem = ({ name, url, description, language, stars }) => {
           {name}
         </Link>
         <Chip
-          label="Add to favourites"
-          icon={<StarBorderPurple500Icon />}
+          label="Public"
+          /* icon={<StarBorderPurple500Icon />} */
           variant="outlined"
           size="small"
           className={styles["repo-item__visibility"]}

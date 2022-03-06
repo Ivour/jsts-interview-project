@@ -6,12 +6,14 @@ import { useParams } from "react-router-dom";
 import { GIT_BASE_URL } from "../../config/constants";
 import ChipWithMenu from "../utils/ChipWithMenu";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../store/auth-context";
 
 const Orgs = () => {
   const [orgs, setOrgs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { user } = useAuthContext();
 
   const { username } = useParams();
   const fetchtry = useCallback(async (username) => {
@@ -74,7 +76,7 @@ const Orgs = () => {
             >
               back
             </Button>
-            <ChipWithMenu />
+            {user && <ChipWithMenu />}
           </>
         }
       />
